@@ -1,0 +1,98 @@
+﻿using System.Collections.Generic;
+using Cake.Core.IO;
+
+namespace Cake.Coverlet
+{
+    /// <summary>
+    /// Settings used by Cake.Coverlet
+    /// </summary>
+    public class CoverletSettings
+    {
+        /// <summary>
+        /// Gets or sets if coverage should be collected
+        /// </summary>
+        public bool CollectCoverage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the output format for Coverlet
+        /// </summary>
+        public CoverletOutputFormat CoverletOutputFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the threshold for Coverlet to use in percent
+        /// </summary>
+        public uint? Threshold { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of threshold to apply.
+        /// </summary>
+        /// <remarks>
+        /// This has no effect if Threshold is not set to a value
+        /// </remarks>
+        public ThresholdType ThresholdType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the output directory the output files
+        /// </summary>
+        public DirectoryPath CoverletOutputDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the output file excluding format
+        /// </summary>
+        public string CoverletOutputName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of files to exclude
+        /// </summary>
+        public List<string> ExcludeByFile { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Gets or sets the exclusion filters
+        /// </summary>
+        public List<string> Exclude { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Adds a filter to the list of exclusions
+        /// </summary>
+        /// <param name="filter">The filter to add</param>
+        /// <returns></returns>
+        public CoverletSettings WithFilter(string filter)
+        {
+            Exclude.Add(filter);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a file to the list of files to exclude
+        /// </summary>
+        /// <param name="file">The file to exclude</param>
+        /// <returns></returns>
+        public CoverletSettings WithFileExclusion(string file)
+        {
+            ExcludeByFile.Add(file);
+            return this;
+        }
+
+        /// <summary>
+        /// Add a type of threshold to combine with the existing
+        /// </summary>
+        /// <param name="type">The type of threshold to add</param>
+        /// <returns></returns>
+        public CoverletSettings WithThresholdType(ThresholdType type)
+        {
+            ThresholdType |= type;
+            return this;
+        }
+
+        /// <summary>
+        /// Add a type of format to combine with the existing output formats
+        /// </summary>
+        /// <param name="format">The format type to add</param>
+        /// <returns></returns>
+        public CoverletSettings WithFormat(CoverletOutputFormat format)
+        {
+            CoverletOutputFormat |= format;
+            return this;
+        }
+    }
+}
