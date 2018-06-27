@@ -32,8 +32,8 @@
   <ItemGroup>
     <PackageReference Include="Cake.Core" Version="0.28.0" />
     <PackageReference Include="Cake.Common" Version="0.28.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-62925-02" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.58" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-62925-02" PrivateAssets="All" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.58" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
