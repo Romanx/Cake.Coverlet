@@ -1,5 +1,8 @@
 # Cake.Coverlet
 
+[![Build status](https://ci.appveyor.com/api/projects/status/pr3lyh3baynax8gx/branch/master?svg=true)](https://ci.appveyor.com/project/Romanx/cake-coverlet/branch/master)
+[![NuGet version](https://img.shields.io/nuget/v/Cake.Coverlet.svg)](https://www.nuget.org/packages/Cake.Coverlet/)
+
 ## Usage
 In order to use the addin please make sure you've included Coverlet in the project you wish to cover and add the following to your cake build file
 ```csharp

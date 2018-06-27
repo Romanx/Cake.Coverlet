@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Trimmed down {{mustache}} templates in .NET</Description>
+    <Description>Coverlet extensions for Cake Build</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Cake.Coverlet</AssemblyName>
     <PackageId>Cake.Coverlet</PackageId>
-    <PackageTags>cake;script;build;coverage;coverlet</PackageTags>
+    <PackageTags>cake;script;build;coverage;coverlet;cake-build</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Company>Alex McAuliffe</Company>
     <Authors>Alex McAuliffe</Authors>
