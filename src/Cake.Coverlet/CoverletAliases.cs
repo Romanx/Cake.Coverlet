@@ -5,6 +5,7 @@ using Cake.Common.Tools.DotNetCore;
 using Cake.Common.Tools.DotNetCore.Test;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Cake.Coverlet
 {
@@ -41,7 +42,7 @@ namespace Cake.Coverlet
                 CoverletSettings settings)
         {
             builder.AppendProperty(nameof(CoverletSettings.CollectCoverage), settings.CollectCoverage.ToString());
-            builder.AppendPropertyList(nameof(CoverletSettings.CoverletOutputFormat), settings.CoverletOutputFormat.ToString().Split(',').Select(s => s.ToLowerInvariant()));
+            builder.AppendPropertyList(nameof(CoverletSettings.CoverletOutputFormat), SplitFlagEnum(settings.CoverletOutputFormat));
 
             if (settings.Threshold.HasValue)
             {
@@ -54,13 +55,13 @@ namespace Cake.Coverlet
 
                 if (settings.ThresholdType != ThresholdType.NotSet)
                 {
-                    builder.AppendPropertyList(nameof(CoverletSettings.ThresholdType), settings.ThresholdType.ToString().Split(',').Select(s => s.ToLowerInvariant()));
+                    builder.AppendPropertyList(nameof(CoverletSettings.ThresholdType), SplitFlagEnum(settings.ThresholdType));
                 }
             }
 
             if (!string.IsNullOrEmpty(settings.CoverletOutputName))
             {
-                builder.AppendProperty(nameof(CoverletSettings.CoverletOutputName), settings.CoverletOutputName.ToString());
+                builder.AppendProperty(nameof(CoverletSettings.CoverletOutputName), settings.OutputNameTransformer(settings.CoverletOutputName));
             }
 
             if (settings.CoverletOutputDirectory != null)
@@ -79,6 +80,8 @@ namespace Cake.Coverlet
             }
 
             return builder;
+
+            IEnumerable<string> SplitFlagEnum(Enum @enum) => @enum.ToString().Split(',').Select(s => s.ToLowerInvariant());
         }
     }
 }

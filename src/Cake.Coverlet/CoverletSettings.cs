@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cake.Core.IO;
 
 namespace Cake.Coverlet
@@ -52,6 +53,12 @@ namespace Cake.Coverlet
         public List<string> Exclude { get; set; } = new List<string>();
 
         /// <summary>
+        /// Gets or sets a transformation function taking the <see cref="CoverletOutputName"/> and
+        /// returning the new file name without an extension
+        /// </summary>
+        public Func<string, string> OutputNameTransformer { get; set; } = str => str;
+
+        /// <summary>
         /// Adds a filter to the list of exclusions
         /// </summary>
         /// <param name="filter">The filter to add</param>
@@ -92,6 +99,16 @@ namespace Cake.Coverlet
         public CoverletSettings WithFormat(CoverletOutputFormat format)
         {
             CoverletOutputFormat |= format;
+            return this;
+        }
+
+        /// <summary>
+        /// Add a default transformer appending the current date time at the time of calling test
+        /// </summary>
+        /// <returns></returns>
+        public CoverletSettings WithDateTimeTransformer()
+        {
+            OutputNameTransformer = str => $"{str}-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
             return this;
         }
     }

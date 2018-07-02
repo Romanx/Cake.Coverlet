@@ -18,7 +18,7 @@ Task("Test")
 {
     var testSettings = new DotNetCoreTestSettings {
     };
-    
+
     var coveletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
@@ -29,3 +29,28 @@ Task("Test")
     DotNetCoreTest("./test/Stubble.Core.Tests/Stubble.Core.Tests.csproj", testSetting, coveletSettings);
 }
 ```
+
+There is an additional api exposed for transforming the output name of the coverage file at the time of calling `dotnet test`.
+This transform function follows the form `Func<string, string>` being passed the `CoverletOutputName` and the return is used for the filename.
+
+```csharp
+Task("Test")
+    .IsDependentOn("Build")
+    .Does<MyBuildData>((data) =>
+{
+    var testSettings = new DotNetCoreTestSettings {
+    };
+
+    var coveletSettings = new CoverletSettings {
+        CollectCoverage = true,
+        CoverletOutputFormat = CoverletOutputFormat.opencover,
+        CoverletOutputDirectory = Directory(".\coverage-results\"),
+        CoverletOutputName = $"results"
+        OutputNameTransformer = str => $"{str}-HelloWorld"
+    };
+
+    DotNetCoreTest("./test/Stubble.Core.Tests/Stubble.Core.Tests.csproj", testSetting, coveletSettings);
+}
+```
+
+We expose a default transformer for the standard practice of appending the current datetime to the file as `WithDateTimeTransformer()`
