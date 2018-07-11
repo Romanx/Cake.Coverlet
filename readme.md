@@ -46,7 +46,7 @@ Task("Test")
         CoverletOutputFormat = CoverletOutputFormat.opencover,
         CoverletOutputDirectory = Directory(".\coverage-results\"),
         CoverletOutputName = $"results"
-        OutputNameTransformer = str => $"{str}-HelloWorld"
+        OutputNameTransformer = (fileName, directory) => $@"{directory}\{fileName}-HelloWorld"
     };
 
     DotNetCoreTest("./test/Stubble.Core.Tests/Stubble.Core.Tests.csproj", testSetting, coveletSettings);

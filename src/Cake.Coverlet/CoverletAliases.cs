@@ -31,7 +31,8 @@ namespace Cake.Coverlet
             DotNetCoreTestSettings settings,
             CoverletSettings coverletSettings)
         {
-            settings.ArgumentCustomization = args => ProcessArguments(context, args, project, coverletSettings);
+            var currentCustomization = settings.ArgumentCustomization;
+            settings.ArgumentCustomization = (args) => ProcessArguments(context, currentCustomization(args), project, coverletSettings);
             context.DotNetCoreTest(project.FullPath, settings);
         }
 
@@ -61,12 +62,10 @@ namespace Cake.Coverlet
 
             if (!string.IsNullOrEmpty(settings.CoverletOutputName))
             {
-                builder.AppendProperty(nameof(CoverletSettings.CoverletOutputName), settings.OutputNameTransformer(settings.CoverletOutputName));
-            }
+                var dir = settings.CoverletOutputDirectory ?? project.GetDirectory();
+                var directoryPath = dir.MakeAbsolute(cakeContext.Environment).FullPath;
 
-            if (settings.CoverletOutputDirectory != null)
-            {
-                builder.AppendProperty(nameof(CoverletSettings.CoverletOutputDirectory), settings.CoverletOutputDirectory.MakeAbsolute(cakeContext.Environment).FullPath);
+                builder.AppendProperty("CoverletOutput", settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
             }
 
             if (settings.ExcludeByFile.Count > 0)

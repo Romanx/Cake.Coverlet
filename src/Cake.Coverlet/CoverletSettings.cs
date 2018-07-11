@@ -5,6 +5,14 @@ using Cake.Core.IO;
 namespace Cake.Coverlet
 {
     /// <summary>
+    /// A delegate representing the output transformation
+    /// </summary>
+    /// <param name="fileName">The file name</param>
+    /// <param name="directoryPath">The directory path</param>
+    /// <returns>The path and name of the file (without extension)</returns>
+    public delegate string OutputTransformer(string fileName, string directoryPath);
+
+    /// <summary>
     /// Settings used by Cake.Coverlet
     /// </summary>
     public class CoverletSettings
@@ -56,7 +64,8 @@ namespace Cake.Coverlet
         /// Gets or sets a transformation function taking the <see cref="CoverletOutputName"/> and
         /// returning the new file name without an extension
         /// </summary>
-        public Func<string, string> OutputNameTransformer { get; set; } = str => str;
+        public OutputTransformer OutputTransformer { get; set; }
+            = (fileName, dir) => $@"{dir}\{fileName}";
 
         /// <summary>
         /// Adds a filter to the list of exclusions
@@ -108,7 +117,7 @@ namespace Cake.Coverlet
         /// <returns></returns>
         public CoverletSettings WithDateTimeTransformer()
         {
-            OutputNameTransformer = str => $"{str}-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
+            OutputTransformer = (fileName, directory) => $@"{directory}\{fileName}-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
             return this;
         }
     }
