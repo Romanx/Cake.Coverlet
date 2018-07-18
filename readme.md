@@ -9,6 +9,8 @@ In order to use the addin please make sure you've included Coverlet in the proje
 #addin nuget:?package=Cake.Coverlet
 ```
 
+**Note:** Works with Coverlet 2.1.1 and up
+
 Then use one of the following snippets
 
 ```csharp
@@ -22,7 +24,7 @@ Task("Test")
     var coveletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
-        CoverletOutputDirectory = Directory(".\coverage-results\"),
+        CoverletOutputDirectory = Directory(@".\coverage-results\"),
         CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
     };
 
@@ -44,7 +46,7 @@ Task("Test")
     var coveletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
-        CoverletOutputDirectory = Directory(".\coverage-results\"),
+        CoverletOutputDirectory = Directory(@".\coverage-results\"),
         CoverletOutputName = $"results"
         OutputNameTransformer = (fileName, directory) => $@"{directory}\{fileName}-HelloWorld"
     };
