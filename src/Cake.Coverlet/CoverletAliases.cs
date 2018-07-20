@@ -32,7 +32,7 @@ namespace Cake.Coverlet
             CoverletSettings coverletSettings)
         {
             var currentCustomization = settings.ArgumentCustomization;
-            settings.ArgumentCustomization = (args) => ProcessArguments(context, currentCustomization(args), project, coverletSettings);
+            settings.ArgumentCustomization = (args) => ProcessArguments(context, currentCustomization?.Invoke(args) ?? args, project, coverletSettings);
             context.DotNetCoreTest(project.FullPath, settings);
         }
 
