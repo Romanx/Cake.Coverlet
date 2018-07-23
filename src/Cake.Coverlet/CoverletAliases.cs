@@ -65,7 +65,9 @@ namespace Cake.Coverlet
                 var dir = settings.CoverletOutputDirectory ?? project.GetDirectory();
                 var directoryPath = dir.MakeAbsolute(cakeContext.Environment).FullPath;
 
-                builder.AppendProperty("CoverletOutput", settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
+                var filepath = FilePath.FromString(settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
+
+                builder.AppendProperty("CoverletOutput", filepath.MakeAbsolute(cakeContext.Environment).FullPath);
             }
 
             if (settings.ExcludeByFile.Count > 0)
