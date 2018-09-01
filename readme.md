@@ -56,3 +56,5 @@ Task("Test")
 ```
 
 We expose a default transformer for the standard practice of appending the current datetime to the file as `WithDateTimeTransformer()`
+
+If you wish to only change the directory that the output is written to then set the `CoverletOutputDirectory` and the filename handling will be done by coverlet as usual.

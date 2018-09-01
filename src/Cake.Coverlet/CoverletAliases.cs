@@ -1,4 +1,4 @@
-﻿using Cake.Core;
+using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
 using Cake.Common.Tools.DotNetCore;
@@ -60,7 +60,14 @@ namespace Cake.Coverlet
                 }
             }
 
-            if (!string.IsNullOrEmpty(settings.CoverletOutputName))
+            if (settings.CoverletOutputDirectory != null && string.IsNullOrEmpty(settings.CoverletOutputName))
+            {
+                var directoryPath = settings.CoverletOutputDirectory
+                    .MakeAbsolute(cakeContext.Environment).FullPath;
+
+                builder.AppendProperty("CoverletOutput", directoryPath);
+            }
+            else if (!string.IsNullOrEmpty(settings.CoverletOutputName))
             {
                 var dir = settings.CoverletOutputDirectory ?? project.GetDirectory();
                 var directoryPath = dir.MakeAbsolute(cakeContext.Environment).FullPath;
