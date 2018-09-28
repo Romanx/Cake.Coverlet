@@ -1,4 +1,4 @@
-using Cake.Core;
+﻿using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
 using Cake.Common.Tools.DotNetCore;
@@ -34,6 +34,15 @@ namespace Cake.Coverlet
             var currentCustomization = settings.ArgumentCustomization;
             settings.ArgumentCustomization = (args) => ProcessArguments(context, currentCustomization?.Invoke(args) ?? args, project, coverletSettings);
             context.DotNetCoreTest(project.FullPath, settings);
+        }
+
+        public static void DotNetCoreTool(this ICakeContext context, IEnumerable<FilePath> testFiles, CoverletToolSettings settings)
+        {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+            if (settings == null)
+                settings = new CoverletToolSettings();
+            new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools).Run(testFiles, settings);
         }
 
         private static ProcessArgumentBuilder ProcessArguments(
