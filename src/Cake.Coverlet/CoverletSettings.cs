@@ -28,7 +28,7 @@ namespace Cake.Coverlet
         /// <summary>
         /// Gets or sets the output format for Coverlet
         /// </summary>
-        public CoverletOutputFormat CoverletOutputFormat { get; set; }
+        public CoverletOutputFormat CoverletOutputFormat { get; set; } = CoverletOutputFormat.json;
 
         /// <summary>
         /// Gets or sets the threshold for Coverlet to use in percent
