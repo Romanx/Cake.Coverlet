@@ -89,7 +89,7 @@ namespace Cake.Coverlet
 
             return builder;
 
-            IEnumerable<string> SplitFlagEnum(Enum @enum) => @enum.ToString().Split(',').Select(s => s.ToLowerInvariant());
+            IEnumerable<string> SplitFlagEnum(Enum @enum) => @enum.ToString("g").Split(',').Select(s => s.ToLowerInvariant());
         }
     }
 }
