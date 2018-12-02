@@ -32,11 +32,18 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does<MyBuildData>((data) =>
 {
-    DotNetCoreBuild("./src/Cake.Coverlet/", data.BuildSettings);
+    DotNetCoreBuild("./Cake.Coverlet.sln", data.BuildSettings);
+});
+
+Task("Test")
+    .IsDependentOn("Build")
+    .Does<MyBuildData>((data) => 
+{
+    DotNetCoreTest("./test/Cake.Coverlet.Tests", data.TestSettings);
 });
 
 Task("Pack")
-    .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .Does<MyBuildData>((data) =>
 {
     DotNetCorePack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
@@ -56,6 +63,7 @@ public class MyBuildData
     public ConvertableDirectoryPath ArtifactsDirectory { get; }
     public DotNetCoreBuildSettings BuildSettings { get; }
     public DotNetCorePackSettings PackSettings { get; }
+    public DotNetCoreTestSettings TestSettings { get; }
     public IReadOnlyList<ConvertableDirectoryPath> BuildDirs { get; }
 
 	public MyBuildData(
@@ -78,6 +86,12 @@ public class MyBuildData
             OutputDirectory = ArtifactsDirectory,
             NoBuild = true,
             Configuration = Configuration,
+        };
+
+        TestSettings = new DotNetCoreTestSettings
+        {
+            NoBuild = true,
+            Configuration = Configuration
         };
 	}
 }
