@@ -9,7 +9,7 @@ In order to use the addin please make sure you've included Coverlet in the proje
 #addin nuget:?package=Cake.Coverlet
 ```
 
-You can also install coverlet as a global tool on your machine or with the [Cake.DotNetTool.Module]() and run the command separately from MSBuild.
+You can also install coverlet as a global tool on your machine or with the [Cake.DotNetTool.Module](https://github.com/cake-contrib/Cake.DotNetTool.Module) and run the command separately from MSBuild.
 
 **Note:** Works with Coverlet 2.1.1 and up
 
