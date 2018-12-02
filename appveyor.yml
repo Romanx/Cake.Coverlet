@@ -1,7 +1,6 @@
 version: 1.0.1000000.{build}
 image: Visual Studio 2017
 configuration: Release
-platform: Any CPU
 install:
 - cmd: git submodule update --init --recursive
 - ps: >-
