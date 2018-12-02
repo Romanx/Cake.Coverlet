@@ -9,6 +9,8 @@ In order to use the addin please make sure you've included Coverlet in the proje
 #addin nuget:?package=Cake.Coverlet
 ```
 
+You can also install coverlet as a global tool on your machine or with the [Cake.DotNetTool.Module]() and run the command separately from MSBuild.
+
 **Note:** Works with Coverlet 2.1.1 and up
 
 Then use one of the following snippets
@@ -28,7 +30,39 @@ Task("Test")
         CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
     };
 
-    DotNetCoreTest("./test/Stubble.Core.Tests/Stubble.Core.Tests.csproj", testSetting, coveletSettings);
+    DotNetCoreTest("./test/My.Project.Tests/My.Project.Tests.csproj", testSetting, coveletSettings);
+}
+```
+
+Or for when installed as a tool:
+
+```csharp
+Task("Test")
+    .IsDependentOn("Build")
+    .Does<MyBuildData>((data) =>
+{
+    var coveletSettings = new CoverletSettings {
+        CollectCoverage = true,
+        CoverletOutputFormat = CoverletOutputFormat.opencover,
+        CoverletOutputDirectory = Directory(@".\coverage-results\"),
+        CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
+    };
+
+    // I want to specify the specific dll file and the project exactly.
+    Coverlet(
+        "./test/My.Project.Tests/bin/Debug/net46/My.Project.Tests.dll", "./test/My.Project.Tests/My.Project.Tests.csproj", 
+        coveletSettings);
+
+    // I want to specify just the project file and the dll can be
+    // inferred from the name of the project file.
+    Coverlet("./test/My.Project.Tests/My.Project.Tests.csproj", 
+        coveletSettings);
+
+    // I want to specify just the project directory, we will discover
+    // any proj file in the directory (take the first) and infer the 
+    // name from the found project.
+    Coverlet("./test/My.Project.Tests",
+        coveletSettings);
 }
 ```
 

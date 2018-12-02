@@ -31,74 +31,122 @@ namespace Cake.Coverlet
             DotNetCoreTestSettings settings,
             CoverletSettings coverletSettings)
         {
+            if (context == null) {
+                throw new ArgumentNullException(nameof(context));
+            }
             var currentCustomization = settings.ArgumentCustomization;
-            settings.ArgumentCustomization = (args) => ProcessArguments(context, currentCustomization?.Invoke(args) ?? args, project, coverletSettings);
+            settings.ArgumentCustomization = (args) => ArgumentsProcessor.ProcessMSBuildArguments(
+                coverletSettings,
+                context.Environment, 
+                currentCustomization?.Invoke(args) ?? args, 
+                project);
+
             context.DotNetCoreTest(project.FullPath, settings);
         }
-
-        public static void DotNetCoreTool(this ICakeContext context, IEnumerable<FilePath> testFiles, CoverletToolSettings settings)
+        
+        /// <summary>
+        /// Runs coverlet with the given dll, test project and settings
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="testFile">The dll to instrument</param>
+        /// <param name="testProject">The test project to run</param>
+        /// <param name="settings">The coverlet settings to apply</param>
+        [CakeMethodAlias]
+        [CakeAliasCategory("Test")]
+        public static void Coverlet(
+            this ICakeContext context,
+            FilePath testFile,
+            FilePath testProject,
+            CoverletSettings settings)
         {
-            if (context == null)
+            if (context == null) {
                 throw new ArgumentNullException(nameof(context));
-            if (settings == null)
-                settings = new CoverletToolSettings();
-            new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools).Run(testFiles, settings);
+            }
+
+            if (settings == null) {
+                settings = new CoverletSettings();
+            }
+
+            new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
+                .Run(testFile, testProject, settings);
         }
 
-        private static ProcessArgumentBuilder ProcessArguments(
-                ICakeContext cakeContext,
-                ProcessArgumentBuilder builder,
-                FilePath project,
-                CoverletSettings settings)
+        /// <summary>
+        /// Runs the coverlet global tool with the given test project. The name of the 
+        /// dll is inferred from the project name
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="testProject">The test project to run</param>
+        /// <param name="settings">The coverlet settings to apply</param>
+        [CakeMethodAlias]
+        [CakeAliasCategory("Test")]
+        public static void Coverlet(
+            this ICakeContext context,
+            FilePath testProject,
+            CoverletSettings settings)
         {
-            builder.AppendProperty(nameof(CoverletSettings.CollectCoverage), settings.CollectCoverage.ToString());
-            builder.AppendPropertyList(nameof(CoverletSettings.CoverletOutputFormat), SplitFlagEnum(settings.CoverletOutputFormat));
-
-            if (settings.Threshold.HasValue)
-            {
-                if (settings.Threshold > 100)
-                {
-                    throw new Exception("Threshold Percentage cannot be set as greater than 100%");
-                }
-
-                builder.AppendProperty(nameof(CoverletSettings.Threshold), settings.Threshold.ToString());
-
-                if (settings.ThresholdType != ThresholdType.NotSet)
-                {
-                    builder.AppendPropertyList(nameof(CoverletSettings.ThresholdType), SplitFlagEnum(settings.ThresholdType));
-                }
+            if (context == null) {
+                throw new ArgumentNullException(nameof(context));
             }
 
-            if (settings.CoverletOutputDirectory != null && string.IsNullOrEmpty(settings.CoverletOutputName))
-            {
-                var directoryPath = settings.CoverletOutputDirectory
-                    .MakeAbsolute(cakeContext.Environment).FullPath;
-
-                builder.AppendProperty("CoverletOutput", directoryPath);
-            }
-            else if (!string.IsNullOrEmpty(settings.CoverletOutputName))
-            {
-                var dir = settings.CoverletOutputDirectory ?? project.GetDirectory();
-                var directoryPath = dir.MakeAbsolute(cakeContext.Environment).FullPath;
-
-                var filepath = FilePath.FromString(settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
-
-                builder.AppendProperty("CoverletOutput", filepath.MakeAbsolute(cakeContext.Environment).FullPath);
+            if (settings == null) {
+                settings = new CoverletSettings();
             }
 
-            if (settings.ExcludeByFile.Count > 0)
-            {
-                builder.AppendPropertyList(nameof(CoverletSettings.ExcludeByFile), settings.ExcludeByFile);
+            var debugFile = FindDebugDll(context, testProject.GetDirectory(), testProject);
+
+            new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
+                .Run(debugFile, testProject, settings);
+        }
+
+        /// <summary>
+        /// Runs the coverlet global tool with the given folder. We will discover any proj files, 
+        /// take the first and infer the name of the dll from that.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="testProjectDir">The directory to find the dll and project from</param>
+        /// <param name="settings">The coverlet settings to apply</param>
+        [CakeMethodAlias]
+        [CakeAliasCategory("Test")]
+        public static void Coverlet(
+            this ICakeContext context,
+            DirectoryPath testProjectDir,
+            CoverletSettings settings)
+        {
+            if (context == null) {
+                throw new ArgumentNullException(nameof(context));
             }
 
-            if (settings.Exclude.Count > 0)
+            if (settings == null) {
+                settings = new CoverletSettings();
+            }
+            
+            var projFile = context.Globber.GetFiles($"{testProjectDir}/*.*proj")
+                .FirstOrDefault();
+
+            if (projFile == null)
             {
-                builder.AppendPropertyList(nameof(CoverletSettings.Exclude), settings.Exclude);
+                throw new Exception($"Could not find valid proj file in {testProjectDir}");
             }
 
-            return builder;
+            var debugFile = FindDebugDll(context, testProjectDir, projFile);
 
-            IEnumerable<string> SplitFlagEnum(Enum @enum) => @enum.ToString("g").Split(',').Select(s => s.ToLowerInvariant());
+            new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
+                .Run(debugFile, projFile, settings);
+        }
+
+        private static FilePath FindDebugDll(ICakeContext context, DirectoryPath path, FilePath filename)
+        {
+            var nameWithoutExtension = filename.GetFilenameWithoutExtension();
+            var debugFile = context.Globber.GetFiles($"{path.MakeAbsolute(context.Environment)}/bin/**/Debug/**/{nameWithoutExtension}.dll")
+                .FirstOrDefault();
+
+            if (debugFile == null) 
+            {
+                throw new Exception($"Could not find debug dll with name {nameWithoutExtension}.dll");
+            }
+
+            return debugFile;
         }
     }
 }

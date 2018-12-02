@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Cake.Common.Tools.DotNetCore;
+using Cake.Core;
 using Cake.Core.IO;
 
 namespace Cake.Coverlet
@@ -15,7 +18,7 @@ namespace Cake.Coverlet
     /// <summary>
     /// Settings used by Cake.Coverlet
     /// </summary>
-    public class CoverletSettings
+    public class CoverletSettings : DotNetCoreSettings
     {
         /// <summary>
         /// Gets or sets if coverage should be collected
@@ -59,6 +62,11 @@ namespace Cake.Coverlet
         /// Gets or sets the exclusion filters
         /// </summary>
         public List<string> Exclude { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Gets or sets the file to merge the results of the run with
+        /// </summary>
+        public FilePath MergeWithFile { get; set; }
 
         /// <summary>
         /// Gets or sets a transformation function taking the <see cref="CoverletOutputName"/> and
@@ -119,6 +127,38 @@ namespace Cake.Coverlet
         {
             OutputTransformer = (fileName, directory) => $@"{directory}\{fileName}-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
             return this;
+        }
+        
+        /// <summary>
+        /// Sets the output format to be a specific value
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public CoverletSettings SetFormat(CoverletOutputFormat format)
+        {
+            CoverletOutputFormat = format;
+            return this;
+        }
+
+        /// <summary>
+        /// Clones the coverlet settings to a new instance
+        /// </summary>
+        /// <returns></returns>
+        public CoverletSettings Clone()
+        {
+            return new CoverletSettings
+            {
+                CollectCoverage = CollectCoverage,
+                CoverletOutputFormat = CoverletOutputFormat,
+                Threshold = Threshold,
+                ThresholdType = ThresholdType,
+                CoverletOutputDirectory = CoverletOutputDirectory == null ? null : DirectoryPath.FromString(CoverletOutputDirectory.FullPath),
+                CoverletOutputName = CoverletOutputName,
+                ExcludeByFile = new List<string>(ExcludeByFile),
+                Exclude = new List<string>(Exclude),
+                MergeWithFile = MergeWithFile == null ? null : FilePath.FromString(MergeWithFile.FullPath),
+                OutputTransformer = OutputTransformer
+            };
         }
     }
 }
