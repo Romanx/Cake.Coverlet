@@ -23,6 +23,10 @@ namespace Cake.Coverlet
         /// <summary>
         /// Cobertura
         /// </summary>
-        cobertura = 0x8
+        cobertura = 0x8,
+        /// <summary>
+        /// TeamCity
+        /// </summary>
+        teamcity = 0x10
     }
 }
