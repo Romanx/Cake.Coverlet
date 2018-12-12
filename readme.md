@@ -23,14 +23,14 @@ Task("Test")
     var testSettings = new DotNetCoreTestSettings {
     };
 
-    var coveletSettings = new CoverletSettings {
+    var coverletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
         CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
     };
 
-    DotNetCoreTest("./test/My.Project.Tests/My.Project.Tests.csproj", testSetting, coveletSettings);
+    DotNetCoreTest("./test/My.Project.Tests/My.Project.Tests.csproj", testSetting, coverletSettings);
 }
 ```
 
@@ -41,7 +41,7 @@ Task("Test")
     .IsDependentOn("Build")
     .Does<MyBuildData>((data) =>
 {
-    var coveletSettings = new CoverletSettings {
+    var coverletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
@@ -52,20 +52,20 @@ Task("Test")
     Coverlet(
         "./test/My.Project.Tests/bin/Debug/net46/My.Project.Tests.dll", 
         "./test/My.Project.Tests/My.Project.Tests.csproj", 
-        coveletSettings);
+        coverletSettings);
 
     // I want to specify just the project file and the dll can be
     // inferred from the name of the project file.
     Coverlet(
         "./test/My.Project.Tests/My.Project.Tests.csproj", 
-        coveletSettings);
+        coverletSettings);
 
     // I want to specify just the project directory, we will discover
     // any proj file in the directory (take the first) and infer the 
     // name from the found project.
     Coverlet(
         "./test/My.Project.Tests",
-        coveletSettings);
+        coverletSettings);
 }
 ```
 
@@ -100,7 +100,7 @@ If you wish to only change the directory that the output is written to then set 
 You can support multiple coverlet formats by providing them like this:
 
 ```csharp
-var coveletSettings = new CoverletSettings {
+var coverletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover | CoverletOutputFormat.covertura,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
@@ -110,7 +110,7 @@ var coveletSettings = new CoverletSettings {
 
 Or by using the method on the settings class like this:
 ```csharp
-var coveletSettings = new CoverletSettings {
+var coverletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
