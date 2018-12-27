@@ -59,6 +59,11 @@ namespace Cake.Coverlet
         public List<string> ExcludeByFile { get; set; } = new List<string>();
 
         /// <summary>
+        /// Gets or sets the list of files to exclude
+        /// </summary>
+        public List<string> ExcludeByAttribute { get; set; } = new List<string>();
+
+        /// <summary>
         /// Gets or sets the exclusion filters
         /// </summary>
         public List<string> Exclude { get; set; } = new List<string>();
@@ -94,6 +99,17 @@ namespace Cake.Coverlet
         public CoverletSettings WithFileExclusion(string file)
         {
             ExcludeByFile.Add(file);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a attribute to the list of attribute to exclude
+        /// </summary>
+        /// <param name="attribute">The attribute to exclude</param>
+        /// <returns></returns>
+        public CoverletSettings WithAttributeExclusion(string attribute)
+        {
+            ExcludeByAttribute.Add(attribute);
             return this;
         }
 
@@ -155,6 +171,7 @@ namespace Cake.Coverlet
                 CoverletOutputDirectory = CoverletOutputDirectory == null ? null : DirectoryPath.FromString(CoverletOutputDirectory.FullPath),
                 CoverletOutputName = CoverletOutputName,
                 ExcludeByFile = new List<string>(ExcludeByFile),
+                ExcludeByAttribute = new List<string>(ExcludeByAttribute),
                 Exclude = new List<string>(Exclude),
                 MergeWithFile = MergeWithFile == null ? null : FilePath.FromString(MergeWithFile.FullPath),
                 OutputTransformer = OutputTransformer
