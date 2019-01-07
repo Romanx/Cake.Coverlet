@@ -67,6 +67,11 @@ namespace Cake.Coverlet
                 builder.AppendPropertyList(nameof(CoverletSettings.Exclude), settings.Exclude);
             }
 
+            if (settings.ExcludeByAttribute.Count > 0)
+            {
+                builder.AppendPropertyList(nameof(CoverletSettings.ExcludeByAttribute), settings.ExcludeByAttribute);
+            }
+
             if (settings.MergeWithFile != null && settings.MergeWithFile.GetExtension() == ".json")
             {
                 builder.AppendMSBuildPropertyQuoted("MergeWith", settings.MergeWithFile.MakeAbsolute(cakeEnvironment).FullPath);
@@ -118,6 +123,11 @@ namespace Cake.Coverlet
             if (settings.ExcludeByFile.Count > 0)
             {
                 builder.AppendSwitchQuoted("--exclude-by-file", settings.ExcludeByFile);
+            }
+
+            if (settings.ExcludeByAttribute.Count > 0)
+            {
+                builder.AppendSwitchQuoted("--exclude-by-attribute", settings.ExcludeByAttribute);
             }
 
             if (settings.Exclude.Count > 0)
