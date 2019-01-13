@@ -17,7 +17,7 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <PackageProjectUrl>https://github.com/romanx/Cake.Coverlet</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/romanx/Cake.Coverlet/blob/master/licence.md</PackageLicenseUrl>
+    <PackageLicenseFile>licence.md</PackageLicenseFile>
     <PackageIconUrl>https://cdn.rawgit.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
     <DebugType>portable</DebugType>
     <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
@@ -35,6 +35,10 @@
     <PackageReference Include="Cake.Common" Version="0.28.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-62925-02" PrivateAssets="All" />
     <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.58" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>  
+        <None Include="..\..\licence.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
