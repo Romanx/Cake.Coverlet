@@ -108,7 +108,6 @@ namespace Cake.Coverlet
         }
 
         /// <summary>
-
         /// Adds a attribute to the list of attribute to exclude
         /// </summary>
         /// <param name="attribute">The attribute to exclude</param>
@@ -119,6 +118,7 @@ namespace Cake.Coverlet
             return this;
         }
 
+        /// <summary>
         /// Adds a filter to the list of inclusions
         /// </summary>
         /// <param name="file">The filter to add</param>
