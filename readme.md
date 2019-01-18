@@ -96,7 +96,7 @@ We expose a default transformer for the standard practice of appending the curre
 
 If you wish to only change the directory that the output is written to then set the `CoverletOutputDirectory` and the filename handling will be done by coverlet as usual.
 
-## Settings more than one output
+## Setting more than one output format
 You can support multiple coverlet formats by providing them like this:
 
 ```csharp
