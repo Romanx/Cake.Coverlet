@@ -33,12 +33,13 @@ namespace Cake.Coverlet
                 }
             }
 
+            string coverletOutput = null;
             if (settings.CoverletOutputDirectory != null && string.IsNullOrEmpty(settings.CoverletOutputName))
             {
                 var directoryPath = settings.CoverletOutputDirectory
                     .MakeAbsolute(cakeEnvironment).FullPath;
 
-                builder.AppendMSBuildProperty("CoverletOutput", directoryPath);
+                coverletOutput = directoryPath;
             }
             else if (!string.IsNullOrEmpty(settings.CoverletOutputName))
             {
@@ -47,7 +48,11 @@ namespace Cake.Coverlet
 
                 var filepath = FilePath.FromString(settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
 
-                builder.AppendMSBuildProperty("CoverletOutput", filepath.MakeAbsolute(cakeEnvironment).FullPath);
+                coverletOutput = filepath.MakeAbsolute(cakeEnvironment).FullPath;
+            }
+            if (coverletOutput != null)
+            {
+                builder.AppendMSBuildProperty("CoverletOutput", $"\"{coverletOutput}\"");
             }
 
             if (settings.ExcludeByFile.Count > 0)
