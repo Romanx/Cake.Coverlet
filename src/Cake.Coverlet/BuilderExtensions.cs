@@ -10,7 +10,6 @@ namespace Cake.Coverlet
         internal static ProcessArgumentBuilder AppendMSBuildProperty(this ProcessArgumentBuilder builder, string propertyName, string value)
         {
             builder.AppendSwitch($"/property:{propertyName}", "=", value);
-            // builder.Append($"/property:{propertyName}={value}");
             return builder;
         }
 

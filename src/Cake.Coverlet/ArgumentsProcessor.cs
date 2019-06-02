@@ -38,7 +38,7 @@ namespace Cake.Coverlet
                 var directoryPath = settings.CoverletOutputDirectory
                     .MakeAbsolute(cakeEnvironment).FullPath;
 
-                builder.AppendMSBuildProperty("CoverletOutput", directoryPath);
+                builder.AppendMSBuildPropertyQuoted("CoverletOutput", directoryPath);
             }
             else if (!string.IsNullOrEmpty(settings.CoverletOutputName))
             {
@@ -47,7 +47,7 @@ namespace Cake.Coverlet
 
                 var filepath = FilePath.FromString(settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
 
-                builder.AppendMSBuildProperty("CoverletOutput", filepath.MakeAbsolute(cakeEnvironment).FullPath);
+                builder.AppendMSBuildPropertyQuoted("CoverletOutput", filepath.MakeAbsolute(cakeEnvironment).FullPath);
             }
 
             if (settings.ExcludeByFile.Count > 0)
