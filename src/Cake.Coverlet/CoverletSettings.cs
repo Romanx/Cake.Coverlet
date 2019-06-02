@@ -74,6 +74,11 @@ namespace Cake.Coverlet
         public List<string> Include { get; set; } = new List<string>();
 
         /// <summary>
+        /// Gets or sets if the test assembly should be included
+        /// </summary>
+        public bool? IncludeTestAssembly { get; set; }
+
+        /// <summary>
         /// Gets or sets the file to merge the results of the run with
         /// </summary>
         public FilePath MergeWithFile { get; set; }
@@ -173,6 +178,17 @@ namespace Cake.Coverlet
         }
 
         /// <summary>
+        /// Sets the output format to be a specific value
+        /// </summary>
+        /// <param name="includeTestAssembly"></param>
+        /// <returns></returns>
+        public CoverletSettings WithIncludeTestAssembly(bool includeTestAssembly)
+        {
+            IncludeTestAssembly = includeTestAssembly;
+            return this;
+        }
+
+        /// <summary>
         /// Clones the coverlet settings to a new instance
         /// </summary>
         /// <returns></returns>
@@ -190,6 +206,7 @@ namespace Cake.Coverlet
                 ExcludeByFile = new List<string>(ExcludeByFile),
                 ExcludeByAttribute = new List<string>(ExcludeByAttribute),
                 Exclude = new List<string>(Exclude),
+                IncludeTestAssembly = IncludeTestAssembly,
                 MergeWithFile = MergeWithFile == null ? null : FilePath.FromString(MergeWithFile.FullPath),
                 OutputTransformer = OutputTransformer
             };

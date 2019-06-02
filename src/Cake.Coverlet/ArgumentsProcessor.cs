@@ -77,6 +77,11 @@ namespace Cake.Coverlet
                 builder.AppendMSBuildPropertyQuoted("MergeWith", settings.MergeWithFile.MakeAbsolute(cakeEnvironment).FullPath);
             }
 
+            if (settings.IncludeTestAssembly.HasValue)
+            {
+                builder.AppendMSBuildProperty(nameof(CoverletSettings.IncludeTestAssembly), settings.IncludeTestAssembly.Value ? bool.TrueString : bool.FalseString);
+            }
+
             return builder;
         }
 
@@ -143,6 +148,11 @@ namespace Cake.Coverlet
             if (settings.MergeWithFile != null && settings.MergeWithFile.GetExtension() == ".json")
             {
                 builder.AppendSwitchQuoted("--merge-with", settings.MergeWithFile.MakeAbsolute(cakeEnvironment).FullPath);
+            }
+
+            if (settings.IncludeTestAssembly.HasValue)
+            {
+                builder.AppendSwitch("--include-test-assembly", settings.IncludeTestAssembly.Value ? bool.TrueString : bool.FalseString);
             }
 
             return builder;
