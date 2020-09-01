@@ -78,12 +78,14 @@ namespace Cake.Coverlet
         /// <param name="context"></param>
         /// <param name="testProject">The test project to run</param>
         /// <param name="settings">The coverlet settings to apply</param>
+        /// <param name="configuration">The configuration to use when searching for DLLs</param>
         [CakeMethodAlias]
         [CakeAliasCategory("Test")]
         public static void Coverlet(
             this ICakeContext context,
             FilePath testProject,
-            CoverletSettings settings)
+            CoverletSettings settings,
+            string configuration = "Debug")
         {
             if (context == null) {
                 throw new ArgumentNullException(nameof(context));
@@ -93,7 +95,7 @@ namespace Cake.Coverlet
                 settings = new CoverletSettings();
             }
 
-            var debugFile = FindDebugDll(context, testProject.GetDirectory(), testProject);
+            var debugFile = FindDebugDll(context, testProject.GetDirectory(), testProject, configuration);
 
             new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
                 .Run(debugFile, testProject, settings);
@@ -106,12 +108,14 @@ namespace Cake.Coverlet
         /// <param name="context"></param>
         /// <param name="testProjectDir">The directory to find the dll and project from</param>
         /// <param name="settings">The coverlet settings to apply</param>
+        /// <param name="configuration">The configuration to use when searching for DLLs</param>
         [CakeMethodAlias]
         [CakeAliasCategory("Test")]
         public static void Coverlet(
             this ICakeContext context,
             DirectoryPath testProjectDir,
-            CoverletSettings settings)
+            CoverletSettings settings,
+            string configuration = "Debug")
         {
             if (context == null) {
                 throw new ArgumentNullException(nameof(context));
@@ -129,21 +133,21 @@ namespace Cake.Coverlet
                 throw new Exception($"Could not find valid proj file in {testProjectDir}");
             }
 
-            var debugFile = FindDebugDll(context, testProjectDir, projFile);
+            var debugFile = FindDebugDll(context, testProjectDir, projFile, configuration);
 
             new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
                 .Run(debugFile, projFile, settings);
         }
 
-        private static FilePath FindDebugDll(ICakeContext context, DirectoryPath path, FilePath filename)
+        private static FilePath FindDebugDll(ICakeContext context, DirectoryPath path, FilePath filename, string configuration)
         {
             var nameWithoutExtension = filename.GetFilenameWithoutExtension();
-            var debugFile = context.Globber.GetFiles($"{path.MakeAbsolute(context.Environment)}/bin/**/Debug/**/{nameWithoutExtension}.dll")
+            var debugFile = context.Globber.GetFiles($"{path.MakeAbsolute(context.Environment)}/bin/**/{configuration}/**/{nameWithoutExtension}.dll")
                 .FirstOrDefault();
 
             if (debugFile == null) 
             {
-                throw new Exception($"Could not find debug dll with name {nameWithoutExtension}.dll");
+                throw new Exception($"Could not find {configuration} dll with name {nameWithoutExtension}.dll");
             }
 
             return debugFile;
