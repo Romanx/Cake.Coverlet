@@ -80,7 +80,7 @@ Task("Test")
     var testSettings = new DotNetCoreTestSettings {
     };
 
-    var coveletSettings = new CoverletSettings {
+    var coverletSettings = new CoverletSettings {
         CollectCoverage = true,
         CoverletOutputFormat = CoverletOutputFormat.opencover,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
@@ -88,7 +88,7 @@ Task("Test")
         OutputNameTransformer = (fileName, directory) => $@"{directory}\{fileName}-HelloWorld"
     };
 
-    DotNetCoreTest("./test/Stubble.Core.Tests/Stubble.Core.Tests.csproj", testSetting, coveletSettings);
+    DotNetCoreTest("./test/Stubble.Core.Tests/Stubble.Core.Tests.csproj", testSetting, coverletSettings);
 }
 ```
 
@@ -102,7 +102,7 @@ You can support multiple coverlet formats by providing them like this:
 ```csharp
 var coverletSettings = new CoverletSettings {
         CollectCoverage = true,
-        CoverletOutputFormat = CoverletOutputFormat.opencover | CoverletOutputFormat.covertura,
+        CoverletOutputFormat = CoverletOutputFormat.opencover | CoverletOutputFormat.cobertura,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
         CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
     };
@@ -115,5 +115,5 @@ var coverletSettings = new CoverletSettings {
         CoverletOutputFormat = CoverletOutputFormat.opencover,
         CoverletOutputDirectory = Directory(@".\coverage-results\"),
         CoverletOutputName = $"results-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}"
-    }.WithFormat(CoverletOutputFormat.covertura);
+    }.WithFormat(CoverletOutputFormat.cobertura);
 ```
