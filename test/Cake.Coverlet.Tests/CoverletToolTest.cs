@@ -23,7 +23,7 @@ namespace Cake.Coverlet.Tests
             var result = _fixture.Run();
 
             result.Args.Should().StartWith("\"/Working/test/Cake.Coverlet.Tests/bin/Debug/netcoreapp2.1/Cake.Coverlet.Tests.dll\"");
-            result.Args.Should().Contain("--targetargs \"test /Working/test/Cake.Coverlet.Tests --no-build\"");
+            result.Args.Should().Contain("--targetargs \"test \"/Working/test/Cake.Coverlet.Tests\" --no-build\"");
             result.Args.Should().Contain("--format json");
         }
 
@@ -41,7 +41,7 @@ namespace Cake.Coverlet.Tests
             Console.WriteLine(result.Args);
 
             result.Args.Should().StartWith("\"/Working/test/Cake.Coverlet.Tests/bin/Debug/netcoreapp2.1/Cake.Coverlet.Tests.dll\"");
-            result.Args.Should().Contain("--targetargs \"test /Working/test/Cake.Coverlet.Tests --no-build\"");
+            result.Args.Should().Contain("--targetargs \"test \"/Working/test/Cake.Coverlet.Tests\" --no-build\"");
             result.Args.Should().Contain("--format json");
             result.Args.Should().Contain("--exclude-by-attribute \"abc.def\"");
             result.Args.Should().Contain("--exclude-by-attribute \"abc2.def\"");
