@@ -1,6 +1,8 @@
 ﻿using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Test;
 using Cake.Common.Tools.DotNetCore;
 using Cake.Common.Tools.DotNetCore.Test;
 using System;
@@ -24,6 +26,7 @@ namespace Cake.Coverlet
         /// <param name="coverletSettings"></param>
         [CakeMethodAlias]
         [CakeAliasCategory("Test")]
+        [Obsolete("DotNetCoreTest is obsolete and will be removed in a future release. Use DotNetTest instead.")]
 
         public static void DotNetCoreTest(
             this ICakeContext context,
@@ -34,16 +37,39 @@ namespace Cake.Coverlet
             if (context == null) {
                 throw new ArgumentNullException(nameof(context));
             }
+
+            context.DotNetTest(project.FullPath, settings);
+        }
+
+        /// <summary>
+        /// Runs DotNetCore using the given <see cref="CoverletSettings"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="project"></param>
+        /// <param name="settings"></param>
+        /// <param name="coverletSettings"></param>
+        [CakeMethodAlias]
+        [CakeAliasCategory("Test")]
+        public static void DotNetTest(
+            this ICakeContext context,
+            FilePath project,
+            DotNetTestSettings settings,
+            CoverletSettings coverletSettings)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             var currentCustomization = settings.ArgumentCustomization;
             settings.ArgumentCustomization = (args) => ArgumentsProcessor.ProcessMSBuildArguments(
                 coverletSettings,
-                context.Environment, 
-                currentCustomization?.Invoke(args) ?? args, 
+                context.Environment,
+                currentCustomization?.Invoke(args) ?? args,
                 project);
 
-            context.DotNetCoreTest(project.FullPath, settings);
+            context.DotNetTest(project.FullPath, settings);
         }
-        
+
         /// <summary>
         /// Runs coverlet with the given dll, test project and settings
         /// </summary>
