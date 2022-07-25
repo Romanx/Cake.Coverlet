@@ -15,7 +15,7 @@ namespace Cake.Coverlet
         private readonly ICakeEnvironment _environment;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Cake.Common.Tools.DotNetCore.VSTest.DotNetCoreVSTester" /> class.
+        /// Initializes a new instance of the <see cref="T:Cake.Common.Tools.DotNet.VSTest.DotNetVSTester" /> class.
         /// </summary>
         /// <param name="fileSystem">The file system.</param>
         /// <param name="environment">The environment.</param>

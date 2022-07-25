@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cake.Common.Tools.DotNetCore;
+using Cake.Common.Tools.DotNet;
 using Cake.Core;
 using Cake.Core.IO;
 
@@ -18,7 +18,7 @@ namespace Cake.Coverlet
     /// <summary>
     /// Settings used by Cake.Coverlet
     /// </summary>
-    public class CoverletSettings : DotNetCoreSettings
+    public class CoverletSettings : DotNetSettings
     {
         /// <summary>
         /// Gets or sets if coverage should be collected

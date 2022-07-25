@@ -1,8 +1,8 @@
 ﻿using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
-using Cake.Common.Tools.DotNetCore;
-using Cake.Common.Tools.DotNetCore.Test;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Test;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -10,13 +10,13 @@ using System.Collections.Generic;
 namespace Cake.Coverlet
 {
     /// <summary>
-    /// Several extension methods when using DotNetCoreTest.
+    /// Several extension methods when using DotNetTest.
     /// </summary>
-    [CakeAliasCategory("DotNetCore")]
+    [CakeAliasCategory("DotNet")]
     public static class CoverletAliases
     {
         /// <summary>
-        /// Runs DotNetCoreTest using the given <see cref="CoverletSettings"/>
+        /// Runs DotNetTest using the given <see cref="CoverletSettings"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="project"></param>
@@ -25,10 +25,10 @@ namespace Cake.Coverlet
         [CakeMethodAlias]
         [CakeAliasCategory("Test")]
 
-        public static void DotNetCoreTest(
+        public static void DotNetTest(
             this ICakeContext context,
             FilePath project,
-            DotNetCoreTestSettings settings,
+            DotNetTestSettings settings,
             CoverletSettings coverletSettings)
         {
             if (context == null) {
@@ -41,7 +41,7 @@ namespace Cake.Coverlet
                 currentCustomization?.Invoke(args) ?? args, 
                 project);
 
-            context.DotNetCoreTest(project.FullPath, settings);
+            context.DotNetTest(project.FullPath, settings);
         }
         
         /// <summary>
