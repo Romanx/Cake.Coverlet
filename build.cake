@@ -25,28 +25,28 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreRestore("./Cake.Coverlet.sln");
+    DotNetRestore("./Cake.Coverlet.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does<MyBuildData>((data) =>
 {
-    DotNetCoreBuild("./Cake.Coverlet.sln", data.BuildSettings);
+    DotNetBuild("./Cake.Coverlet.sln", data.BuildSettings);
 });
 
 Task("Test")
     .IsDependentOn("Build")
     .Does<MyBuildData>((data) => 
 {
-    DotNetCoreTest("./test/Cake.Coverlet.Tests", data.TestSettings);
+    DotNetTest("./test/Cake.Coverlet.Tests", data.TestSettings);
 });
 
 Task("Pack")
     .IsDependentOn("Test")
     .Does<MyBuildData>((data) =>
 {
-    DotNetCorePack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
+    DotNetPack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
 });
 
 Task("AppVeyor")
