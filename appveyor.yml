@@ -1,5 +1,5 @@
 version: 1.0.1000000.{build}
-image: Visual Studio 2017
+image: Visual Studio 2022
 configuration: Release
 install:
 - cmd: git submodule update --init --recursive
