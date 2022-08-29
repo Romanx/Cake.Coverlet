@@ -23,7 +23,6 @@ namespace Cake.Coverlet
         /// <param name="coverletSettings"></param>
         [CakeMethodAlias]
         [CakeAliasCategory("Test")]
-
         public static void DotNetTest(
             this ICakeContext context,
             FilePath project,
