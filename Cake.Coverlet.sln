@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32804.182
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E0CB0BC0-F7D4-4D3B-97C3-15C790FFC71D}"
 EndProject
@@ -10,7 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A651E8AD-703B-4B21-B344-68F5F09CDA67}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		appveyor.yml = appveyor.yml
 		build.cake = build.cake
 		readme.md = readme.md
 		version.json = version.json
@@ -18,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EEC95ADF-2D7A-4B97-9D4E-27F2F198FFC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.Coverlet.Tests", "test\Cake.Coverlet.Tests\Cake.Coverlet.Tests.csproj", "{77208523-570A-4419-B4C9-F26B33D3BAA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.Coverlet.Tests", "test\Cake.Coverlet.Tests\Cake.Coverlet.Tests.csproj", "{77208523-570A-4419-B4C9-F26B33D3BAA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
