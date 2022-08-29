@@ -61,9 +61,9 @@ public class MyBuildData
 {
 	public string Configuration { get; }
     public ConvertableDirectoryPath ArtifactsDirectory { get; }
-    public DotNetCoreBuildSettings BuildSettings { get; }
-    public DotNetCorePackSettings PackSettings { get; }
-    public DotNetCoreTestSettings TestSettings { get; }
+    public DotNetBuildSettings BuildSettings { get; }
+    public DotNetPackSettings PackSettings { get; }
+    public DotNetTestSettings TestSettings { get; }
     public IReadOnlyList<ConvertableDirectoryPath> BuildDirs { get; }
 
 	public MyBuildData(
@@ -75,20 +75,20 @@ public class MyBuildData
         ArtifactsDirectory = artifactsDirectory;
         BuildDirs = buildDirectories;
 
-        BuildSettings = new DotNetCoreBuildSettings {
+        BuildSettings = new DotNetBuildSettings {
             Configuration = configuration,
             NoRestore = true,
             ArgumentCustomization = args => args.Append("/property:WarningLevel=0") // Until Warnings are fixed in StyleCop
         };
 
-        PackSettings = new DotNetCorePackSettings
+        PackSettings = new DotNetPackSettings
         {
             OutputDirectory = ArtifactsDirectory,
             NoBuild = true,
             Configuration = Configuration,
         };
 
-        TestSettings = new DotNetCoreTestSettings
+        TestSettings = new DotNetTestSettings
         {
             NoBuild = true,
             Configuration = Configuration

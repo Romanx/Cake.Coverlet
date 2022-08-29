@@ -1,22 +1,21 @@
-﻿using Cake.Core;
+﻿using System;
+using System.Linq;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Test;
+using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
-using Cake.Common.Tools.DotNetCore;
-using Cake.Common.Tools.DotNetCore.Test;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Cake.Coverlet
 {
     /// <summary>
-    /// Several extension methods when using DotNetCoreTest.
+    /// Several extension methods when using DotNetTest.
     /// </summary>
-    [CakeAliasCategory("DotNetCore")]
+    [CakeAliasCategory("DotNet")]
     public static class CoverletAliases
     {
         /// <summary>
-        /// Runs DotNetCoreTest using the given <see cref="CoverletSettings"/>
+        /// Runs DotNetTest using the given <see cref="CoverletSettings"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="project"></param>
@@ -25,25 +24,26 @@ namespace Cake.Coverlet
         [CakeMethodAlias]
         [CakeAliasCategory("Test")]
 
-        public static void DotNetCoreTest(
+        public static void DotNetTest(
             this ICakeContext context,
             FilePath project,
-            DotNetCoreTestSettings settings,
+            DotNetTestSettings settings,
             CoverletSettings coverletSettings)
         {
-            if (context == null) {
+            if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
             }
             var currentCustomization = settings.ArgumentCustomization;
             settings.ArgumentCustomization = (args) => ArgumentsProcessor.ProcessMSBuildArguments(
                 coverletSettings,
-                context.Environment, 
-                currentCustomization?.Invoke(args) ?? args, 
+                context.Environment,
+                currentCustomization?.Invoke(args) ?? args,
                 project);
 
-            context.DotNetCoreTest(project.FullPath, settings);
+            context.DotNetTest(project.FullPath, settings);
         }
-        
+
         /// <summary>
         /// Runs coverlet with the given dll, test project and settings
         /// </summary>
@@ -59,13 +59,12 @@ namespace Cake.Coverlet
             FilePath testProject,
             CoverletSettings settings)
         {
-            if (context == null) {
+            if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (settings == null) {
-                settings = new CoverletSettings();
-            }
+            settings ??= new CoverletSettings();
 
             new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
                 .Run(testFile, testProject, settings);
@@ -87,13 +86,12 @@ namespace Cake.Coverlet
             CoverletSettings settings,
             string configuration = "Debug")
         {
-            if (context == null) {
+            if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (settings == null) {
-                settings = new CoverletSettings();
-            }
+            settings ??= new CoverletSettings();
 
             var debugFile = FindDebugDll(context, testProject.GetDirectory(), testProject, configuration);
 
@@ -117,14 +115,13 @@ namespace Cake.Coverlet
             CoverletSettings settings,
             string configuration = "Debug")
         {
-            if (context == null) {
+            if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (settings == null) {
-                settings = new CoverletSettings();
-            }
-            
+            settings ??= new CoverletSettings();
+
             var projFile = context.Globber.GetFiles($"{testProjectDir}/*.*proj")
                 .FirstOrDefault();
 
@@ -145,7 +142,7 @@ namespace Cake.Coverlet
             var debugFile = context.Globber.GetFiles($"{path.MakeAbsolute(context.Environment)}/bin/**/{configuration}/**/{nameWithoutExtension}.dll")
                 .FirstOrDefault();
 
-            if (debugFile == null) 
+            if (debugFile == null)
             {
                 throw new Exception($"Could not find {configuration} dll with name {nameWithoutExtension}.dll");
             }
