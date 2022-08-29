@@ -25,3 +25,10 @@ jobs:
         uses: cake-build/cake-action@v1
         with:
           target: Github
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        if: runner.os == 'Windows'
+        with:
+          if-no-files-found: warn
+          name: packages
+          path: ./artifacts/*.nupkg
