@@ -49,7 +49,7 @@ Task("Pack")
     DotNetPack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
 });
 
-Task("AppVeyor")
+Task("Github")
     .IsDependentOn("Pack");
 
 Task("Default")
