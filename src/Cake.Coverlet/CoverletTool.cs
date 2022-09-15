@@ -64,7 +64,7 @@ namespace Cake.Coverlet
             argumentBuilder.AppendQuoted(coverageFile.MakeAbsolute(_environment).FullPath);
 
             argumentBuilder.AppendSwitchQuoted("--target", "dotnet");
-            argumentBuilder.AppendSwitchQuoted($"--targetargs", $"test {testProject.MakeAbsolute(_environment)} --no-build");
+            argumentBuilder.AppendSwitchQuoted($"--targetargs", $"test \"{testProject.MakeAbsolute(_environment)}\" --no-build");
 
             ArgumentsProcessor.ProcessToolArguments(settings, _environment, argumentBuilder, testProject);
 
