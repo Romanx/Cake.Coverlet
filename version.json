@@ -1,7 +1,8 @@
 {
   "version": "3.0",
   "publicReleaseRefSpec": [
-    "^refs/tags/v\\d\\.\\d" // we also release tags starting with vN.N
+    "^refs/tags/v\\d\\.\\d", // we also release tags starting with vN.N
+    "^refs/heads/main$"
   ],
   "cloudBuild": {
     "buildNumber": {
