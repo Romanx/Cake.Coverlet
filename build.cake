@@ -25,32 +25,53 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreRestore("./Cake.Coverlet.sln");
+    DotNetRestore("./Cake.Coverlet.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does<MyBuildData>((data) =>
 {
-    DotNetCoreBuild("./Cake.Coverlet.sln", data.BuildSettings);
+    DotNetBuild("./Cake.Coverlet.sln", data.BuildSettings);
 });
 
 Task("Test")
     .IsDependentOn("Build")
     .Does<MyBuildData>((data) => 
 {
-    DotNetCoreTest("./test/Cake.Coverlet.Tests", data.TestSettings);
+    DotNetTest("./test/Cake.Coverlet.Tests", data.TestSettings);
 });
 
 Task("Pack")
     .IsDependentOn("Test")
     .Does<MyBuildData>((data) =>
 {
-    DotNetCorePack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
+    DotNetPack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
 });
 
-Task("AppVeyor")
-    .IsDependentOn("Pack");
+Task("Publish")
+    .IsDependentOn("Pack")
+    .Does<MyBuildData>((ICakeContext context, MyBuildData data) => 
+{
+    // Make sure that there is an API key.
+    var apiKey =  context.EnvironmentVariable("NUGET_API_KEY");
+    if (string.IsNullOrWhiteSpace(apiKey)) {
+        throw new CakeException("No NuGet API key specified.");
+    }
+
+    // Publish all projects
+    foreach(var file in GetFiles($"./{data.ArtifactsDirectory}/*.nupkg"))
+    {
+        context.Information("Publishing {0}...", file.GetFilename().FullPath);
+        context.NuGetPush(file, new NuGetPushSettings {
+            ApiKey = apiKey,
+            Source = "https://api.nuget.org/v3/index.json"
+        });
+    }
+});
+
+Task("Github")
+    .IsDependentOn("Publish");
 
 Task("Default")
     .IsDependentOn("Pack");
@@ -61,9 +82,9 @@ public class MyBuildData
 {
 	public string Configuration { get; }
     public ConvertableDirectoryPath ArtifactsDirectory { get; }
-    public DotNetCoreBuildSettings BuildSettings { get; }
-    public DotNetCorePackSettings PackSettings { get; }
-    public DotNetCoreTestSettings TestSettings { get; }
+    public DotNetBuildSettings BuildSettings { get; }
+    public DotNetPackSettings PackSettings { get; }
+    public DotNetTestSettings TestSettings { get; }
     public IReadOnlyList<ConvertableDirectoryPath> BuildDirs { get; }
 
 	public MyBuildData(
@@ -75,20 +96,20 @@ public class MyBuildData
         ArtifactsDirectory = artifactsDirectory;
         BuildDirs = buildDirectories;
 
-        BuildSettings = new DotNetCoreBuildSettings {
+        BuildSettings = new DotNetBuildSettings {
             Configuration = configuration,
             NoRestore = true,
             ArgumentCustomization = args => args.Append("/property:WarningLevel=0") // Until Warnings are fixed in StyleCop
         };
 
-        PackSettings = new DotNetCorePackSettings
+        PackSettings = new DotNetPackSettings
         {
             OutputDirectory = ArtifactsDirectory,
             NoBuild = true,
             Configuration = Configuration,
         };
 
-        TestSettings = new DotNetCoreTestSettings
+        TestSettings = new DotNetTestSettings
         {
             NoBuild = true,
             Configuration = Configuration

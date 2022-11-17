@@ -1,0 +1,34 @@
+name: Build and Test
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macOS-latest]
+    steps:
+      - name: Get the sources
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - name: Nerdbank.GitVersioning
+        uses: dotnet/nbgv@v0.4.0
+        with:
+          setAllVars: true
+      - name: Run the build script
+        uses: cake-build/cake-action@v1
+        with:
+          target: Pack
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        if: runner.os == 'Windows'
+        with:
+          if-no-files-found: warn
+          name: packages
+          path: ./artifacts/*.nupkg

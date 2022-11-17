@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Cake.Common.Tools.DotNetCore;
-using Cake.Core;
+using Cake.Common.Tools.DotNet;
 using Cake.Core.IO;
 
 namespace Cake.Coverlet
@@ -18,7 +16,7 @@ namespace Cake.Coverlet
     /// <summary>
     /// Settings used by Cake.Coverlet
     /// </summary>
-    public class CoverletSettings : DotNetCoreSettings
+    public class CoverletSettings : DotNetSettings
     {
         /// <summary>
         /// Gets or sets if coverage should be collected
@@ -165,7 +163,7 @@ namespace Cake.Coverlet
             OutputTransformer = (fileName, directory) => $@"{directory}\{fileName}-{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
             return this;
         }
-        
+
         /// <summary>
         /// Sets the output format to be a specific value
         /// </summary>
