@@ -49,11 +49,29 @@ Task("Pack")
     DotNetPack("./src/Cake.Coverlet/Cake.Coverlet.csproj", data.PackSettings);
 });
 
-Task("Appveyor")
-    .IsDependentOn("Pack");
+Task("Publish")
+    .IsDependentOn("Pack")
+    .Does<MyBuildData>((ICakeContext context, MyBuildData data) => 
+{
+    // Make sure that there is an API key.
+    var apiKey =  context.EnvironmentVariable("NUGET_API_KEY");
+    if (string.IsNullOrWhiteSpace(apiKey)) {
+        throw new CakeException("No NuGet API key specified.");
+    }
+
+    // Publish all projects
+    foreach(var file in GetFiles($"./{data.ArtifactsDirectory}/*.nupkg"))
+    {
+        context.Information("Publishing {0}...", file.GetFilename().FullPath);
+        context.NuGetPush(file, new NuGetPushSettings {
+            ApiKey = apiKey,
+            Source = "https://api.nuget.org/v3/index.json"
+        });
+    }
+});
 
 Task("Github")
-    .IsDependentOn("Pack");
+    .IsDependentOn("Publish");
 
 Task("Default")
     .IsDependentOn("Pack");

@@ -24,7 +24,7 @@ jobs:
       - name: Run the build script
         uses: cake-build/cake-action@v1
         with:
-          target: Github
+          target: Pack
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         if: runner.os == 'Windows'
