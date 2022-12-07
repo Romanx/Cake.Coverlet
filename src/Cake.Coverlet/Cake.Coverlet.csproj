@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Cake.Coverlet</AssemblyName>
     <PackageId>Cake.Coverlet</PackageId>
-    <PackageTags>cake;script;build;coverage;coverlet;cake-build</PackageTags>
+    <PackageTags>cake;coverage;coverlet;cake-addin;cake-build;addin;script;build;cake-contrib</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Company>Alex McAuliffe</Company>
     <Authors>Alex McAuliffe</Authors>
