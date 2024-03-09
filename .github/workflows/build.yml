@@ -17,14 +17,25 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+          
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+
       - name: Nerdbank.GitVersioning
         uses: dotnet/nbgv@v0.4.0
         with:
           setAllVars: true
+
       - name: Run the build script
         uses: cake-build/cake-action@v1
         with:
           target: Pack
+          cake-version: tool-manifest
+
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         if: runner.os == 'Windows'

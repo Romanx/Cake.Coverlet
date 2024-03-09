@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Coverlet extensions for Cake Build</Description>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Cake.Coverlet</AssemblyName>
     <PackageId>Cake.Coverlet</PackageId>
@@ -16,11 +16,12 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/romanx/Cake.Coverlet</PackageProjectUrl>
     <PackageLicenseFile>licence.md</PackageLicenseFile>
     <PackageIcon>images\icon.png</PackageIcon>
     <PackageIconUrl>https://cdn.jsdelivr.net/gh/cake-contrib/graphics/png/addin/cake-contrib-addin-medium.png</PackageIconUrl>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
@@ -31,18 +32,23 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Cake.Common" Version="3.0.0" PrivateAssets="All" />
+    <PackageReference Include="Cake.Common" Version="4.0.0" PrivateAssets="All" />
     <PackageReference Include="Cake.Addin.Analyzer" Version="0.1.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.109" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>  
-      <None Include="..\..\licence.md" Pack="true" PackagePath="" />
+    <None Include="..\..\licence.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
