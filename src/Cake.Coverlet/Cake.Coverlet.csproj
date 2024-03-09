@@ -16,6 +16,7 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/romanx/Cake.Coverlet</PackageProjectUrl>
     <PackageLicenseFile>licence.md</PackageLicenseFile>
     <PackageIcon>images\icon.png</PackageIcon>
@@ -46,7 +47,8 @@
   </ItemGroup>
 
   <ItemGroup>  
-      <None Include="..\..\licence.md" Pack="true" PackagePath="" />
+    <None Include="..\..\licence.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
