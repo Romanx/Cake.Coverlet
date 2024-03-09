@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Coverlet extensions for Cake Build</Description>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Cake.Coverlet</AssemblyName>
     <PackageId>Cake.Coverlet</PackageId>
