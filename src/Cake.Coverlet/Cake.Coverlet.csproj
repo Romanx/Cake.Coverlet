@@ -20,7 +20,7 @@
     <PackageLicenseFile>licence.md</PackageLicenseFile>
     <PackageIcon>images\icon.png</PackageIcon>
     <PackageIconUrl>https://cdn.jsdelivr.net/gh/cake-contrib/graphics/png/addin/cake-contrib-addin-medium.png</PackageIconUrl>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
