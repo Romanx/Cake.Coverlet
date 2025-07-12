@@ -20,17 +20,17 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            6.0.x
             8.0.x
 
       - name: Nerdbank.GitVersioning
         uses: dotnet/nbgv@v0.4.0
         with:
           setAllVars: true
-
-      - name: Build
-        uses: cake-build/cake-action@v1
+          
+      - name: Build & Publish
+        uses: cake-build/cake-action@v3
         env:
-            NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         with:
+          project-path: ${{ github.workspace }}/build/Build.csproj
           target: Github
