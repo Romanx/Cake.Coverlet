@@ -108,10 +108,9 @@ internal static class ArgumentsProcessor
 
         if (settings.CoverletOutputDirectory != null && string.IsNullOrEmpty(settings.CoverletOutputName))
         {
-            var directoryPath = settings.CoverletOutputDirectory
-                .MakeAbsolute(cakeEnvironment).FullPath;
+            var absoluteDirectoryPath = settings.CoverletOutputDirectory.MakeAbsolute(cakeEnvironment);
 
-            builder.AppendSwitchQuoted("--output", directoryPath);
+            builder.AppendSwitchQuoted("--output", $"{absoluteDirectoryPath}{absoluteDirectoryPath.Separator}");
         }
         else if (!string.IsNullOrEmpty(settings.CoverletOutputName))
         {
