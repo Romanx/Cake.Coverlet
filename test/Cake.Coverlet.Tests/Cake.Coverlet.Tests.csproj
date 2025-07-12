@@ -4,6 +4,9 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Using Include="JetBrains.Annotations"/>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Cake.Common" />
     <PackageReference Include="Cake.Testing" />
     <PackageReference Include="FluentAssertions" />
@@ -13,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Cake.Coverlet\Cake.Coverlet.csproj" />
