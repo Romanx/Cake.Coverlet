@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="build.cake" />
+    <File Path="readme.md" />
+    <File Path="version.json" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github\dependabot.yml" />
+    <File Path=".github\workflows\build.yml" />
+    <File Path=".github\workflows\publish.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Cake.Coverlet/Cake.Coverlet.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Cake.Coverlet.Tests/Cake.Coverlet.Tests.csproj" />
+  </Folder>
+</Solution>

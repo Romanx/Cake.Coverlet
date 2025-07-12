@@ -25,14 +25,14 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetRestore("./Cake.Coverlet.sln");
+    DotNetRestore("./Cake.Coverlet.slnx");
 });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does<MyBuildData>((data) =>
 {
-    DotNetBuild("./Cake.Coverlet.sln", data.BuildSettings);
+    DotNetBuild("./Cake.Coverlet.slnx", data.BuildSettings);
 });
 
 Task("Test")
