@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Description>Coverlet extensions for Cake Build</Description>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,35 +23,26 @@
     <DebugType>embedded</DebugType>
     <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-
     <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-
     <!-- Optional: Include PDB in the built .nupkg -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Cake.Common" Version="4.0.0" PrivateAssets="All" />
-    <PackageReference Include="Cake.Addin.Analyzer" Version="0.1.3">
+    <PackageReference Include="Cake.Common" PrivateAssets="All" />
+    <PackageReference Include="Cake.Addin.Analyzer">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="all" />
   </ItemGroup>
-
-  <ItemGroup>  
+  <ItemGroup>
     <None Include="..\..\licence.md" Pack="true" PackagePath="\" />
     <None Include="..\..\readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\asset\cake-coverlet-nuget.png" Pack="true" Visible="false" PackagePath="images\icon.png" />
   </ItemGroup>
-
 </Project>

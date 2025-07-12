@@ -17,6 +17,7 @@
     <File Path=".gitignore" />
     <File Path="readme.md" />
     <File Path="version.json" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/Solution Items/.github/">
     <File Path=".github\dependabot.yml" />
