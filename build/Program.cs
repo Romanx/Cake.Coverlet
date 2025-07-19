@@ -148,7 +148,7 @@ public sealed class GithubTask : AsyncFrostingTask<BuildContext>
             userName: null,
             apiToken: githubToken,
             owner: owner,
-            repository: repository,
+            repository: repoName,
             tagName: tag,
             settings: releaseSettings);
 
