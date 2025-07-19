@@ -5,6 +5,7 @@ using Cake.Common.Build;
 using Cake.Common.IO;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Build;
+using Cake.Common.Tools.DotNet.NuGet.Push;
 using Cake.Common.Tools.DotNet.Pack;
 using Cake.Common.Tools.DotNet.Test;
 using Cake.Common.Tools.NuGet;
@@ -83,8 +84,11 @@ public sealed class PublishTask : FrostingTask<BuildContext>
         foreach (var file in context.GetFiles($"{context.ArtifactsDirectory}/*.nupkg"))
         {
             context.Log.Information("Publishing {0}...", file.GetFilename().FullPath);
-            context.NuGetPush(file,
-                new NuGetPushSettings { ApiKey = apiKey, Source = "https://api.nuget.org/v3/index.json" });
+            context.DotNetNuGetPush(file, new DotNetNuGetPushSettings()
+            {
+                ApiKey = apiKey,
+                Source = "https://api.nuget.org/v3/index.json"
+            });
         }
     }
 }
