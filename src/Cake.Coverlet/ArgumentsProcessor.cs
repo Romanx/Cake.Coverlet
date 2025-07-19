@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Cake.Core;
 using Cake.Core.IO;
+using Path = Cake.Core.IO.Path;
 
 namespace Cake.Coverlet;
 
@@ -87,7 +88,7 @@ internal static class ArgumentsProcessor
         CoverletSettings settings,
         ICakeEnvironment cakeEnvironment,
         ProcessArgumentBuilder builder,
-        FilePath project)
+        Path path)
     {
         builder.AppendSwitch("--format", SplitFlagEnum(settings.CoverletOutputFormat));
 
@@ -98,7 +99,7 @@ internal static class ArgumentsProcessor
                 throw new InvalidOperationException("Threshold Percentage cannot be set as greater than 100%");
             }
 
-            builder.AppendSwitch(nameof(CoverletSettings.Threshold), settings.Threshold.Value.ToString(CultureInfo.InvariantCulture));
+            builder.AppendSwitch("--threshold", settings.Threshold.Value.ToString(CultureInfo.InvariantCulture));
 
             if (settings.ThresholdType != ThresholdType.NotSet)
             {
@@ -114,8 +115,18 @@ internal static class ArgumentsProcessor
         }
         else if (!string.IsNullOrEmpty(settings.CoverletOutputName))
         {
-            var dir = settings.CoverletOutputDirectory ?? project.GetDirectory();
-            var directoryPath = dir.MakeAbsolute(cakeEnvironment).FullPath;
+            var dir = settings.CoverletOutputDirectory;
+            if (settings.CoverletOutputDirectory is null)
+            {
+                dir = path switch
+                {
+                    FilePath fp => fp.GetDirectory(),
+                    DirectoryPath dp => dp,
+                    _ => throw new ArgumentException("Unhandled type of path")
+                };
+            }
+            
+            var directoryPath = dir!.MakeAbsolute(cakeEnvironment).FullPath;
 
             var filepath = FilePath.FromString(settings.OutputTransformer(settings.CoverletOutputName, directoryPath));
 

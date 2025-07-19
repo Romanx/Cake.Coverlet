@@ -3,6 +3,7 @@ using Cake.Common.Tools.DotNet.Test;
 using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
+using Path = Cake.Core.IO.Path;
 
 namespace Cake.Coverlet;
 
@@ -44,7 +45,7 @@ public static class CoverletAliases
     }
 
     /// <summary>
-    /// Runs coverlet with the given dll, test project and settings
+    /// Runs coverlet with the given dll, test project, and settings
     /// </summary>
     /// <param name="context"></param>
     /// <param name="testFile">The dll to instrument</param>
@@ -126,6 +127,29 @@ public static class CoverletAliases
 
         new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
             .Run(debugFile, projFile, settings);
+    }
+
+    /// <summary>
+    /// Executes Coverlet using the specified path, target, and settings.
+    /// </summary>
+    /// <param name="context">The context in which the tool is run.</param>
+    /// <param name="path">Path to the test assembly or application directory.</param>
+    /// <param name="target">Path to the test runner application.</param>
+    /// <param name="settings">The coverlet settings to apply</param>
+    [CakeMethodAlias]
+    [CakeAliasCategory("Test")]
+    public static void Coverlet(
+        this ICakeContext context,
+        Path path,
+        FilePath target,
+        CoverletSettings? settings)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNull(target);
+        
+        new CoverletTool(context.FileSystem, context.Environment, context.ProcessRunner, context.Tools)
+            .RunTarget(path, target, settings ?? new CoverletSettings());
     }
 
     private static FilePath FindDebugDll(ICakeContext context, DirectoryPath path, FilePath filename, string configuration)
