@@ -1,0 +1,33 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/build/">
+    <Project Path="build\Build.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="readme.md" />
+    <File Path="version.json" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github\dependabot.yml" />
+    <File Path=".github\workflows\build.yml" />
+    <File Path=".github\workflows\publish.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Cake.Coverlet/Cake.Coverlet.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Cake.Coverlet.Tests/Cake.Coverlet.Tests.csproj" />
+  </Folder>
+</Solution>

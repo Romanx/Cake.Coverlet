@@ -1,32 +1,30 @@
-﻿using System;
+﻿namespace Cake.Coverlet;
 
-namespace Cake.Coverlet
+/// <summary>
+/// Maps to the output formats provided by Coverlet
+/// </summary>
+[Flags]
+[PublicAPI]
+public enum CoverletOutputFormat
 {
     /// <summary>
-    /// Maps to the output formats provided by Coverlet
+    /// Json
     /// </summary>
-    [Flags]
-    public enum CoverletOutputFormat
-    {
-        /// <summary>
-        /// Json
-        /// </summary>
-        json = 0x1,
-        /// <summary>
-        /// Lcov
-        /// </summary>
-        lcov = 0x2,
-        /// <summary>
-        /// Opencover
-        /// </summary>
-        opencover = 0x4,
-        /// <summary>
-        /// Cobertura
-        /// </summary>
-        cobertura = 0x8,
-        /// <summary>
-        /// TeamCity
-        /// </summary>
-        teamcity = 0x10
-    }
+    json = 0x1,
+    /// <summary>
+    /// Lcov
+    /// </summary>
+    lcov = 0x2,
+    /// <summary>
+    /// Opencover
+    /// </summary>
+    opencover = 0x4,
+    /// <summary>
+    /// Cobertura
+    /// </summary>
+    cobertura = 0x8,
+    /// <summary>
+    /// TeamCity
+    /// </summary>
+    teamcity = 0x10
 }

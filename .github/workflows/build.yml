@@ -8,13 +8,10 @@ on:
     - '**.csproj'
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macOS-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Get the sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
           
@@ -22,8 +19,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            6.0.x
             8.0.x
+            9.0.x
 
       - name: Nerdbank.GitVersioning
         uses: dotnet/nbgv@v0.4.0
@@ -31,14 +28,13 @@ jobs:
           setAllVars: true
 
       - name: Run the build script
-        uses: cake-build/cake-action@v1
+        uses: cake-build/cake-action@v3
         with:
+          project-path: ${{ github.workspace }}/build/Build.csproj
           target: Pack
-          cake-version: tool-manifest
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: warn
           name: packages
