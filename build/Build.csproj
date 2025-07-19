@@ -6,5 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cake.Frosting"/>
+    <PackageReference Include="Cake.GitHub" />
+    <PackageReference Include="Cake.GitVersioning" />
   </ItemGroup>
 </Project>

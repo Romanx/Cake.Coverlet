@@ -2,8 +2,8 @@ name: Publish
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*' # Trigger on version tags like v1.0.0, v1.0.1
 
 jobs:
   release:
@@ -32,6 +32,9 @@ jobs:
         uses: cake-build/cake-action@v3
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         with:
           project-path: ${{ github.workspace }}/build/Build.csproj
           target: Github
