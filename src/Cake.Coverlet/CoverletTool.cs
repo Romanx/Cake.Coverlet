@@ -1,6 +1,7 @@
 ﻿using Cake.Core;
 using Cake.Core.IO;
 using Cake.Core.Tooling;
+using Path = Cake.Core.IO.Path;
 
 namespace Cake.Coverlet;
 
@@ -44,6 +45,34 @@ public sealed class CoverletTool : Tool<CoverletSettings>
         ArgumentNullException.ThrowIfNull(settings);
 
         Run(settings, GetArguments(testFile, testProject, settings));
+    }
+
+    /// <summary>
+    /// Executes the specified target using the coverlet tool for a given app directory.
+    /// </summary>
+    /// <param name="path">The Path to the test assembly or application directory.</param>
+    /// <param name="target">Path to the test runner application.</param>
+    /// <param name="settings">The settings used to configure the coverlet tool.</param>
+    public void RunTarget(Path path, FilePath target, CoverletSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(settings);
+        
+        var argumentBuilder = new ProcessArgumentBuilder();
+
+        var absolutePath = path switch
+        {
+            FilePath fp => fp.MakeAbsolute(_environment).FullPath,
+            DirectoryPath dp => dp.MakeAbsolute(_environment).FullPath,
+            _ => throw new ArgumentException("Unhandled type of path")
+        };
+        
+        argumentBuilder.AppendQuoted(absolutePath);
+        argumentBuilder.AppendSwitchQuoted("--target", target.MakeAbsolute(_environment).FullPath);
+        ArgumentsProcessor.ProcessToolArguments(settings, _environment, argumentBuilder, path);
+        
+        Run(settings, argumentBuilder);
     }
 
     private ProcessArgumentBuilder GetArguments(

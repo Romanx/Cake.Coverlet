@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using AwesomeAssertions;
 using Cake.Core.IO;
 using Xunit;
 
 namespace Cake.Coverlet.Tests;
 
-public class CoverletToolTest(ITestOutputHelper testOutputHelper, CoverletToolFixture fixture) : IClassFixture<CoverletToolFixture>
+public class CoverletToolTest(CoverletToolFixture fixture) : IClassFixture<CoverletToolFixture>
 {
     [Fact]
     public void AbsolutePath_Should_Be_Passed()
@@ -15,10 +15,14 @@ public class CoverletToolTest(ITestOutputHelper testOutputHelper, CoverletToolFi
         fixture.TestProject = "./test/Cake.Coverlet.Tests/";
 
         var result = fixture.Run();
-
-        result.Args.Should().StartWith("\"/Working/test/Cake.Coverlet.Tests/bin/Debug/netcoreapp2.1/Cake.Coverlet.Tests.dll\"");
-        result.Args.Should().Contain("--targetargs \"test /Working/test/Cake.Coverlet.Tests --no-build\"");
-        result.Args.Should().Contain("--format json");
+        
+        result.Path.Should().BeEquivalentTo(FilePath.FromString("/Working/test/Cake.Coverlet.Tests/bin/Debug/netcoreapp2.1/Cake.Coverlet.Tests.dll"));
+        result.Arguments.Should().BeEquivalentTo(new Dictionary<string, IReadOnlyList<string>>
+        {
+            ["--target"] = ["dotnet"],
+            ["--targetargs"] = ["test /Working/test/Cake.Coverlet.Tests --no-build"],
+            ["--format"] = ["json"],
+        });
     }
 
     [Fact]
@@ -31,14 +35,15 @@ public class CoverletToolTest(ITestOutputHelper testOutputHelper, CoverletToolFi
         fixture.Settings.WithAttributeExclusion("abc2.def");
 
         var result = fixture.Run();
-
-        testOutputHelper.WriteLine(result.Args);
-
-        result.Args.Should().StartWith("\"/Working/test/Cake.Coverlet.Tests/bin/Debug/netcoreapp2.1/Cake.Coverlet.Tests.dll\"");
-        result.Args.Should().Contain("--targetargs \"test /Working/test/Cake.Coverlet.Tests --no-build\"");
-        result.Args.Should().Contain("--format json");
-        result.Args.Should().Contain("--exclude-by-attribute \"abc.def\"");
-        result.Args.Should().Contain("--exclude-by-attribute \"abc2.def\"");
+        
+        result.Path.Should().BeEquivalentTo(FilePath.FromString("/Working/test/Cake.Coverlet.Tests/bin/Debug/netcoreapp2.1/Cake.Coverlet.Tests.dll"));
+        result.Arguments.Should().BeEquivalentTo(new Dictionary<string, IReadOnlyList<string>>
+        {
+            ["--target"] = ["dotnet"],
+            ["--targetargs"] = ["test /Working/test/Cake.Coverlet.Tests --no-build"],
+            ["--format"] = ["json"],
+            ["--exclude-by-attribute"] = ["abc.def", "abc2.def"],
+        });
     }
     
     [Fact]
@@ -54,14 +59,13 @@ public class CoverletToolTest(ITestOutputHelper testOutputHelper, CoverletToolFi
         fixture.TestProject = "./test/Cake.Coverlet.Tests/";
 
         var result = fixture.Run();
-        var split = result.Process.Arguments
-            .Select(arg => arg.Render())
-            .ToArray();
-
-        split.Should().ContainSingle(i => i.StartsWith("--output"))
-            .Which.Should().BeEquivalentTo("""
-               --output "/Working/Output/TestResults/"
-               """);
+        result.Arguments.Should().BeEquivalentTo(new Dictionary<string, IReadOnlyList<string>>
+        {
+            ["--target"] = ["dotnet"],
+            ["--targetargs"] = ["test /Working/test/Cake.Coverlet.Tests --no-build"],
+            ["--format"] = ["opencover", "cobertura"],
+            ["--output"] = ["/Working/Output/TestResults/"]
+        });
     }
 
     [Fact]
@@ -75,7 +79,11 @@ public class CoverletToolTest(ITestOutputHelper testOutputHelper, CoverletToolFi
         fixture.TestProject = "./test/Cake.Coverlet.Tests/";
 
         var result = fixture.Run();
-
-        result.Args.Should().Contain("--format teamcity");
+        result.Arguments.Should().BeEquivalentTo(new Dictionary<string, IReadOnlyList<string>>
+        {
+            ["--target"] = ["dotnet"],
+            ["--targetargs"] = ["test /Working/test/Cake.Coverlet.Tests --no-build"],
+            ["--format"] = ["teamcity"]
+        });
     }
 }
