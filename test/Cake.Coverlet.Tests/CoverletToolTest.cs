@@ -2,7 +2,6 @@
 using AwesomeAssertions;
 using Cake.Core.IO;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Cake.Coverlet.Tests;
 
