@@ -41,7 +41,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Using Include="JetBrains.Annotations"/>
+    <Using Include="JetBrains.Annotations" />
   </ItemGroup>
   
   <ItemGroup>
