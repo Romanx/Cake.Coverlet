@@ -20,7 +20,7 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.2" />
   </ItemGroup>
   <ItemGroup>
-    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.7.115" />
+    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.8.118" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 </Project>
