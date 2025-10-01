@@ -7,7 +7,7 @@
   <ItemGroup Label="Build Deps">
     <PackageVersion Include="Cake.Frosting" Version="5.0.0" />
     <PackageVersion Include="Cake.GitHub" Version="1.0.0" />
-    <PackageVersion Include="Cake.GitVersioning" Version="3.7.115" />
+    <PackageVersion Include="Cake.GitVersioning" Version="3.8.118" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="Cake.Addin.Analyzer" Version="0.1.3" />
