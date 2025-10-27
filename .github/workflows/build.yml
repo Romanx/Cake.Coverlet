@@ -34,7 +34,7 @@ jobs:
           target: Pack
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           if-no-files-found: warn
           name: packages
