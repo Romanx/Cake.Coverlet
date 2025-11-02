@@ -5,7 +5,7 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup Label="Build Deps">
-    <PackageVersion Include="Cake.Frosting" Version="5.0.0" />
+    <PackageVersion Include="Cake.Frosting" Version="5.1.0" />
     <PackageVersion Include="Cake.GitHub" Version="1.0.0" />
     <PackageVersion Include="Cake.GitVersioning" Version="3.8.118" />
   </ItemGroup>
