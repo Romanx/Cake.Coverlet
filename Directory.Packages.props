@@ -11,7 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="Cake.Addin.Analyzer" Version="0.1.3" />
-    <PackageVersion Include="Cake.Common" Version="5.1.0" />
+    <PackageVersion Include="Cake.Common" Version="6.0.0" />
     <PackageVersion Include="Cake.Testing" Version="5.1.0" />
     <PackageVersion Include="AwesomeAssertions" Version="9.3.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
