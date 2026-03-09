@@ -20,7 +20,7 @@ jobs:
         with:
           dotnet-version: |
             8.0.x
-            9.0.x
+            10.0.x
 
       - name: Nerdbank.GitVersioning
         uses: dotnet/nbgv@v0.5.1
