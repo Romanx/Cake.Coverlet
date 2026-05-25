@@ -23,7 +23,7 @@ jobs:
             10.0.x
 
       - name: Nerdbank.GitVersioning
-        uses: dotnet/nbgv@v0.5.1
+        uses: dotnet/nbgv@v0.5.2
         with:
           setAllVars: true
 
